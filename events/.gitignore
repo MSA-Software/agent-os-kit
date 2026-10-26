@@ -1,0 +1,6 @@
+# Runtime-generated event journals are transient — do not track them.
+# Keep only the format references (this rule, the README, and the sample).
+*
+!.gitignore
+!README.md
+!sample-journal.md

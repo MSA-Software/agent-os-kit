@@ -1,0 +1,54 @@
+# 07 — Agent Roles
+# The roles / subagents the system can dispatch, and their boundaries.
+# Isolated reviewer agents, tools, and safety gates.
+#
+# Tool binding is runtime-agnostic: `tools` lists CAPABILITY tags (what the role
+# is allowed to do), not concrete tools or MCP servers. The integration layer
+# maps each capability to a real tool under integrations/<runtime>/ — so the same
+# roles run on Hermes or OpenClaw without edits here. Grant each role the fewest
+# capabilities it needs (least privilege); `boundaries` are hard limits the role
+# must never cross, and they inherit everything in 09-safety-and-boundaries.md.
+
+roles:
+  - id: planner
+    purpose: "Turn a request into a scoped plan."
+    tools:
+      - read-files          # read the kit + repo to scope the work
+      - web-search          # research, read-only
+    can_write: false
+    boundaries:
+      - "Does not implement — only plans."
+      - "No write or deploy capability, even if asked."
+
+  - id: implementer
+    purpose: "Execute an approved plan."
+    tools:
+      - read-files
+      - write-files         # edit code/artifacts within scope
+      - run-commands        # build/test in a non-production environment
+    can_write: true
+    boundaries:
+      - "Only touches files in the approved scope."
+      - "Never deploys and never reviews its own work."
+
+  - id: reviewer
+    purpose: "Independently review work before it ships."
+    tools:
+      - read-files          # read-only by design — isolation is the point
+    can_write: false
+    boundaries:
+      - "Never reviews its own output (must be a different run than implementer)."
+      - "No write or deploy capability."
+
+  - id: deployer
+    purpose: "Ship verified change to its environment."
+    tools:
+      - run-commands        # the deploy command only
+    can_write: true
+    boundaries:
+      - "Requires a passing review gate AND human sign-off first."
+      - "Production deploys always stop for explicit approval (see 09)."
+
+# Add operator-specific roles the same way: give a purpose, the minimal
+# capability tags, can_write, and hard boundaries. Bind the capability tags to
+# real tools/MCP under integrations/<runtime>/ — never hard-code a tool here.

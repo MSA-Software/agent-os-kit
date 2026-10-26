@@ -1,0 +1,42 @@
+# 01 — Operator Profile
+# Who the operator is. The agent reads this to tailor decisions and tone.
+#
+# This file ships INTENTIONALLY EMPTY: empty strings / [] / null are
+# placeholders, so an unedited kit never feeds the agent invented "facts"
+# about a person who does not exist. Fill it in for your own operator before
+# the first real run — see the worked-example operator described in prose in
+# 00-system-brief.md for the shape of a filled profile.
+#
+# Rule the agent must honor: treat any field left blank here as UNKNOWN, not as
+# a fact. Ask the operator rather than guessing (see 02-operating-principles.md).
+
+operator:
+  name: ""
+  kind: ""                       # "individual" | "company"
+  preferred_language: "en"
+  timezone: ""
+  roles: []                      # e.g. ["founder", "developer"]
+  current_focus: []              # e.g. ["ship v1", "hiring"]
+
+strengths: []                    # e.g. ["backend", "product"]
+
+constraints:
+  time_per_week_hours: null      # unset; e.g. 20 (0 would read as "no time")
+  responsibilities: []           # e.g. ["support", "sales"]
+
+communication_preferences:
+  directness: "direct"
+  detail_level: "concise"
+  decision_style: "options-with-recommendation"
+
+agent_should_help_with:
+  - planning
+  - prioritization
+  - review
+  - deployment
+  - flow
+
+agent_should_not_do:
+  - make irreversible decisions without approval
+  - store secrets
+  - pretend uncertain facts are confirmed

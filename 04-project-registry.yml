@@ -1,0 +1,35 @@
+# 04 — Project Registry
+# The single source of truth for the projects the agent helps run — a registry
+# instead of memory chaos. The agent reads this to know what is active, what is
+# blocked, and what the next action is, without re-deriving it from chat history.
+#
+# Ships INTENTIONALLY EMPTY: an unedited kit has no phantom project, so the
+# agent never treats a fabricated project as real. Populate `projects:` for your
+# own context using the shape shown in the commented worked example below.
+#
+# Rules the agent must honor:
+#   - Treat this file as authoritative for project state. If a project is not
+#     here, it is not active — ask before acting on it.
+#   - Keep exactly one entry per project; update `status` / `next_action` in
+#     place rather than appending duplicates.
+#   - `next_action` is a small, concrete step (see 02-operating-principles.md:
+#     "prefer small next actions over vague goals").
+projects: []
+
+# Worked example — a filled entry for the solo-founder operator in
+# 00-system-brief.md. Copy into `projects:` above and edit for your own work:
+#  - id: "acme-saas"             # stable slug, referenced elsewhere in the kit
+#    name: "Acme SaaS"
+#    status: "active"            # "active" | "paused" | "archived"
+#    goal: "Ship the v1 billing flow and get the first 10 paying customers"
+#    repo: "github.com/operator/acme-saas"   # url or local path, optional
+#    stack:
+#      - "python"
+#      - "postgres"
+#    owner_role: "founder"
+#    priority: "high"            # "high" | "medium" | "low"
+#    next_action: "Wire Stripe webhook to mark subscriptions active"
+#    blockers:
+#      - "Waiting on Stripe live-mode approval"
+#    next_checkpoint: "2026-07-18"           # date or milestone, optional
+#    notes: "Keep pricing page a draft until billing is verified end-to-end"

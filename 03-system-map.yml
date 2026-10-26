@@ -1,0 +1,45 @@
+# 03 — System Map
+# How the pieces of the AI operating system fit together.
+# Skeleton — fill for your context.
+
+# The always-on context layer the agent loads first.
+# 09-safety-and-boundaries.md is loaded first and its rules override every other
+# file (see start.md read order) — it must always be in context.
+context_layer:
+  files:
+    - 09-safety-and-boundaries.md
+    - 00-system-brief.md
+    - 01-operator-profile.yml
+    - 02-operating-principles.md
+
+# Where structured state lives (registry instead of memory chaos).
+registries:
+  projects: 04-project-registry.yml
+  skills: 06-skills-catalog.md
+  roles: 07-agent-roles.yml
+
+# The dev-flow the system executes.
+workflows:
+  definition: 05-workflows.md
+  stages:
+    - plan
+    - code
+    - review
+    - deploy
+    - flow
+
+# Observability + human approval.
+review:
+  events_journal: events/
+  loops: 08-events-and-review-loops.md
+
+# Pluggable runtimes (runtime-specific config is scoped here).
+# Runtimes are discovered from the integrations/ folder — adding one is a new
+# integrations/<runtime>/ folder only, with no edit to this core file
+# (see README.md "Pluggable integrations" and 10-system-roadmap.md "Add a runtime").
+integrations:
+  dir: integrations/
+  convention: "integrations/<runtime>/ with setup.md + config templates"
+
+# Helper automation.
+scripts_dir: scripts/
